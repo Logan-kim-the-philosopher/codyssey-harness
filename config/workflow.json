@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "sessionTitle": {
+    "source": "assignmentCode",
+    "renameImmediatelyAfterCapture": true,
+    "includeAssignmentTitle": false
+  },
+  "confirmation": {
+    "yesPhrases": ["응", "ㅇ", "ㅇㅇ", "네", "예", "좋아", "그래", "진행해", "진행해줘", "진행", "넘어가", "넘어가자", "승인", "확인", "응 진행해", "응 진행해줘", "네 진행해", "네 진행해줘", "좋아 진행해", "그래 진행해"],
+    "noPhrases": ["아니", "아니요", "취소", "보류", "중단", "다시 검토", "아니 진행하지마", "네 취소"]
+  },
+  "phases": ["intake", "artifact", "analyze", "presentation-content", "learning", "submission", "published"],
+  "execution": {
+    "mode": "auto-continue",
+    "pausePoints": ["requirements-approved", "presentation-design-approved", "external-mutation", "material-user-conflict"]
+  },
+  "intents": {
+    "requirements-approved": {
+      "phrases": [],
+      "from": ["intake"],
+      "to": "artifact"
+    },
+    "artifact-complete": {
+      "phrases": ["산출물 완료"],
+      "from": ["artifact"],
+      "to": "analyze"
+    },
+    "presentation-design-complete": {
+      "phrases": ["발표 설계 완료"],
+      "from": ["analyze"],
+      "to": "presentation-content"
+    },
+    "presentation-content-complete": {
+      "phrases": ["발표 내용 생성 완료"],
+      "from": ["presentation-content"],
+      "to": "learning"
+    },
+    "submit": {
+      "phrases": ["제출해줘"],
+      "from": ["learning"],
+      "to": "submission"
+    }
+  }
+}

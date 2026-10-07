@@ -1,0 +1,14 @@
+{
+  "intake": {
+    "requires": ["source-preserved", "structured-requirements", "user-confirmation"]
+  },
+  "artifact": {
+    "requires": ["artifact-directory", "artifact-file", "approved-requirements", "acceptance-criteria-verified", "validation-passed", "explicit-user-intent"]
+  },
+  "analyze": {
+    "requires": ["analysis-plan", "explicit-user-intent"]
+  },
+  "submission": {
+    "requires": ["artifact-directory", "presentation-file", "readme-file", "requirements-file", "validation-passed"]
+  }
+}

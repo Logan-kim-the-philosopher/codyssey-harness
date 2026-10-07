@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["version", "code", "title", "phase", "paths", "requirements", "validation", "history"],
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "code": { "type": "string", "minLength": 1 },
+    "title": { "type": "string" },
+    "phase": { "enum": ["intake", "artifact", "analyze", "presentation", "learning", "submission", "published"] },
+    "paths": { "type": "object", "required": ["artifact", "presentation", "submission"] },
+    "requirements": {
+      "type": "object",
+      "required": ["sourceFile", "checklistFile", "status", "items"],
+      "properties": {
+        "sourceFile": { "type": "string" },
+        "checklistFile": { "type": "string" },
+        "status": { "enum": ["empty", "draft", "approved", "unrecovered"] },
+        "approvedAt": { "type": "string" },
+        "items": { "type": "array" }
+      }
+    },
+    "validation": { "type": "object", "required": ["status"] },
+    "pendingTransition": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["intent", "from", "to", "requestedAt"],
+          "properties": {
+            "intent": { "type": "string" },
+            "from": { "type": "string" },
+            "to": { "type": "string" },
+            "requestedAt": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "history": { "type": "array" }
+  }
+}

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Codyssey Harness"
+  short_description: "Run Codyssey assignment workflow"
+  default_prompt: "Use $codyssey-harness to start or continue a Codyssey assignment."
+
+policy:
+  allow_implicit_invocation: true

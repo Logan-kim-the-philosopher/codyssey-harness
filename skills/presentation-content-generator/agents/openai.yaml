@@ -1,0 +1,4 @@
+interface:
+  display_name: "Presentation Content Generator"
+  short_description: "Generate self-contained presentation content for Codyssey decks"
+  default_prompt: "Create and validate the final presentation-content.json from the approved presentation design and artifact."

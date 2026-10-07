@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "status", "chapters", "slides"],
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "status": { "enum": ["draft", "approved"] },
+    "approvedAt": { "type": "string" },
+    "chapters": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "purpose", "themes"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "purpose": { "type": "string", "minLength": 1 },
+          "themes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "title", "takeaway", "explanation", "concepts", "result", "evidence"],
+              "properties": {
+                "id": { "type": "string", "minLength": 1 },
+                "title": { "type": "string", "minLength": 1 },
+                "takeaway": { "type": "string", "minLength": 1 },
+                "explanation": { "type": "string", "minLength": 1 },
+                "concepts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["term", "explanation"],
+                    "properties": {
+                      "term": { "type": "string", "minLength": 1 },
+                      "explanation": { "type": "string", "minLength": 1 }
+                    }
+                  }
+                },
+                "result": { "type": "string", "minLength": 1 },
+                "evidence": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "slides": {
+      "description": "Canonical slide order. The renderer emits exactly one slide for each item; slide numbers are derived from this order.",
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "type", "chapterIds"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "type": { "const": "cover" },
+              "title": { "type": "string", "minLength": 1 },
+              "subtitle": { "type": "string" },
+              "chapterIds": { "$ref": "#/$defs/chapterIds" }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "type", "chapterId"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "type": { "const": "chapter-cover" },
+              "chapterId": { "type": "string", "minLength": 1 }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "type", "chapterId", "themeId", "requirementIds", "file", "regionIds"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "type": { "const": "code" },
+              "title": { "type": "string", "minLength": 1 },
+              "chapterId": { "type": "string", "minLength": 1 },
+              "themeId": { "type": "string", "minLength": 1 },
+              "requirementIds": { "$ref": "#/$defs/requirementIds" },
+              "file": { "type": "string", "minLength": 1 },
+              "regionIds": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+              "explanation": { "type": "string" },
+              "codeReading": {
+                "description": "Grouped, slide-specific code interpretation for the help modal. Every region on the slide must be explained exactly once.",
+                "type": "array",
+                "minItems": 1,
+                "items": { "$ref": "#/$defs/codeReadingBlock" }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "type", "chapterId", "themeId", "requirementIds"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "type": { "const": "terminal" },
+              "title": { "type": "string", "minLength": 1 },
+              "chapterId": { "type": "string", "minLength": 1 },
+              "themeId": { "type": "string", "minLength": 1 },
+              "requirementIds": { "$ref": "#/$defs/requirementIds" },
+              "command": { "type": "string", "minLength": 1 },
+              "output": { "type": "string" },
+              "explanation": { "type": "string" }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "type", "chapterId", "themeId", "requirementIds"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "type": { "const": "image" },
+              "title": { "type": "string", "minLength": 1 },
+              "chapterId": { "type": "string", "minLength": 1 },
+              "themeId": { "type": "string", "minLength": 1 },
+              "requirementIds": { "$ref": "#/$defs/requirementIds" },
+              "src": { "type": "string", "minLength": 1 },
+              "alt": { "type": "string", "minLength": 1 },
+              "caption": { "type": "string" },
+              "explanation": { "type": "string" }
+            }
+          },
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "codeReadingBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["regionIds", "interpretation", "terms"],
+      "properties": {
+        "regionIds": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "interpretation": { "type": "string", "minLength": 1 },
+        "terms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["term", "explanation"],
+            "properties": {
+              "term": { "type": "string", "minLength": 1 },
+              "explanation": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "requirementIds": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "chapterIds": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["version", "status", "sourceFile", "checklistFile", "items"],
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "status": { "enum": ["draft", "approved"] },
+    "generatedAt": { "type": "string" },
+    "approvedAt": { "type": "string" },
+    "sourceFile": { "type": "string" },
+    "checklistFile": { "type": "string" },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "category", "scope", "included", "description", "acceptanceCriteria", "sourceRefs", "verification", "verificationRequired", "status"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^REQ-[0-9]{3}$" },
+          "title": { "type": "string", "minLength": 1 },
+          "category": { "enum": ["functional", "quality", "technical", "delivery", "bonus", "constraint"] },
+          "scope": { "enum": ["required", "optional"] },
+          "included": { "type": ["boolean", "null"] },
+          "description": { "type": "string", "minLength": 1 },
+          "acceptanceCriteria": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["id", "text", "status", "evidence"],
+              "properties": {
+                "id": { "type": "string", "pattern": "^REQ-[0-9]{3}-C[0-9]{2}$" },
+                "text": { "type": "string", "minLength": 1 },
+                "status": { "enum": ["unverified", "partial", "fulfilled", "missing", "excluded"] },
+                "evidence": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "sourceRefs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["document", "excerpt"],
+              "properties": {
+                "document": { "enum": ["source", "checklist"] },
+                "excerpt": { "type": "string", "minLength": 1 }
+              }
+            }
+          },
+          "verification": { "enum": ["static", "runtime", "visual", "manual", "delivery"] },
+          "verificationRequired": { "type": "boolean" },
+          "status": { "enum": ["unverified", "partial", "fulfilled", "missing", "excluded"] }
+        }
+      }
+    }
+  }
+}
